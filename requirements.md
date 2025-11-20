@@ -9,5 +9,5 @@
     ```
 3. install required python libraries: 
     ``` bash
-    pip install pandas catboost numpy matplotlib
+    pip install pandas catboost numpy matplotlib shap
     ```
