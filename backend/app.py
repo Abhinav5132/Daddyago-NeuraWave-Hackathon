@@ -20,6 +20,11 @@ class User(db.Model):
     username = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
 
+class HealthUserMigraineData(db.Model):
+    pass
+
+class TriggerUserMigraineData(db.Model):
+    pass
 
 # ----------------------
 # Routes
@@ -31,10 +36,10 @@ def register()-> tuple[Response, int]:
     password = data.get("password")
 
     if not username or not password:
-        return jsonify({"error": "Username and password required"}, 400)
+        return jsonify({"error": "Username and password required"}), 400
 
     if User.query.filter_by(username=username).first():
-        return jsonify({"error": "Username already exists"}, 400)
+        return jsonify({"error": "Username already exists"}), 400
 
     user = User(username=username, password=password)
     db.session.add(user)
@@ -43,7 +48,7 @@ def register()-> tuple[Response, int]:
 
 
 @app.route("/login", methods=["POST"])
-def login():
+def login()-> tuple[Response, int]:
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
@@ -51,22 +56,22 @@ def login():
     user = User.query.filter_by(username=username, password=password).first()
     if user:
         session["user_id"] = user.id
-        return {"message": f"Logged in as {username}"}
-    return {"error": "Invalid credentials"}, 401
+        return jsonify({"message": f"Logged in as {username}"}), 200
+    return jsonify({"error": "Invalid credentials"}), 401
 
 
 @app.route("/logout")
-def logout():
+def logout()-> tuple[Response, int]:
     session.pop("user_id", None)
-    return {"message": "Logged out"}
+    return jsonify({"message": "Logged out"}), 200
 
 
 @app.route("/me")
-def me():
+def me()-> tuple[Response, int]:
     if "user_id" in session:
         user = User.query.get(session["user_id"])
-        return {"user_id": user.id, "username": user.username}
-    return {"error": "Not logged in"}, 401
+        return jsonify({"user_id": user.id, "username": user.username}), 200
+    return jsonify({"error": "Not logged in"}), 401
 
 
 if __name__ == "__main__":
