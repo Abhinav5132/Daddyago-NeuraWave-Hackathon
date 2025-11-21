@@ -1,5 +1,6 @@
 :root {
 	--angle: 90deg;
+	--scale: 2;
 }
 
 body {
@@ -8,45 +9,51 @@ body {
 
 code {
 	display: inline-block;
-	max-width: 600px;
+	max-width: calc(300px * var(--scale));
 	padding: 0;
 	line-height: 1.5;
 	color: #ccc
 }
 
 .sc-gauge {
-	width: 200px;
+	width: calc(200px * var(--scale));
 	height: auto;
-	margin: 20px auto;
+	margin: calc(10px * var(--scale)) auto;
 }
 
 .sc-background {
 	position: relative;
-	height: 100px;
+	height: calc(100px * var(--scale));
 	margin-bottom: 10px;
 	background-color: #fff;
-	border-radius: 150px 150px 0 0;
+	border-radius:
+		calc(150px * var(--scale))
+		calc(150px * var(--scale))
+		0 0;
 	overflow: hidden;
 	text-align: center;
 }
 
 .sc-mask {
 	position: absolute;
-	top: 20px;
-	right: 20px;
-	left: 20px;
-	height: 80px;
+	top: calc(20px * var(--scale));
+	right: calc(20px * var(--scale));
+	left: calc(20px * var(--scale));
+	height: calc(80px * var(--scale));
 	background-color: #fff;
-	border-radius: 150px 150px 0 0
+	border-radius:
+		calc(150px * var(--scale))
+		calc(150px * var(--scale))
+		0 0;
 }
 
 .sc-percentage {
 	position: absolute;
-	top: 100px;
+	top: calc(100px * var(--scale));
 	left: -200%;
 	width: 400%;
 	height: 400%;
-	margin-left: 100px;
+	margin-left: calc(100px * var(--scale));
 	background-color: #00aeef;
 }
 
@@ -57,9 +64,9 @@ code {
 
 .sc-value {
 	position: absolute;
-	top: 50%;
+	top: 40%;
 	left: 0;
 	width: 100%;
-	font-size: 40px;
+	font-size: calc(46px * var(--scale));
 	font-weight: 700
 }
