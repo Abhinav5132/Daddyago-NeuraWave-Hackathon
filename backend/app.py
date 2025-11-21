@@ -32,7 +32,15 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
-
+    gender = db.Column(db.String(120), nullable = False)
+    migraine_days_per_month = db.Column(db.Integer,nullable = False )
+    trigger_stress = db.Cloumn(db.Integer, nullable = False)
+    trigger_hormones = db.Cloumn(db.Integer, nullable = False)
+    trigger_sleep = db.Cloumn(db.Integer, nullable = False)
+    trigger_weather = db.Cloumn(db.Integer, nullable = False) 
+    trigger_meals = db.Cloumn(db.Integer, nullable = False)
+    trigger_medicine = db.Cloumn(db.Integer, nullable = False)
+    normal_sleep = db.Cloumn(db.Integer, nullable = False)
 # class HealthUserMigraineData(db.Model):
 #     pass
 
@@ -47,6 +55,16 @@ def register()-> tuple[Response, int]:
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
+    gender = data.get("gender")
+    migraine_days_per_month = data.get("migraine_days_per_month")
+    trigger_stress = data.get("trigger_stress")
+    trigger_hormones = data.get("trigger_hormones")
+    trigger_sleep = data.get("trigger_sleep")
+    trigger_weather = data.get("trigger_weather")
+    trigger_meals = data.get("trigger_meals")
+    trigger_medicine = data.get("trigger_medicine")
+    normal_sleep = data.get("normal_sleep")
+
 
     if not username or not password:
         return jsonify({"error": "Username and password required"}), 400
@@ -54,7 +72,13 @@ def register()-> tuple[Response, int]:
     if User.query.filter_by(username=username).first():
         return jsonify({"error": "Username already exists"}), 400
 
-    user = User(username=username, password=password)
+    user = User(username=username, password=password, gender=gender, 
+    migraine_days_per_month=migraine_days_per_month, trigger_stress=trigger_stress, 
+    trigger_hormones=trigger_hormones, trigger_sleep=trigger_sleep, 
+    trigger_weather=trigger_weather, trigger_meals = trigger_meals, 
+    trigger_medicine = trigger_medicine,
+    normal_sleep = normal_sleep)
+    
     db.session.add(user)
     db.session.commit()
     return jsonify({"message": "User registered successfully"}), 201
