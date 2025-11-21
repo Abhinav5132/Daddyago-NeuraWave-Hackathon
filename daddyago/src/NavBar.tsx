@@ -517,7 +517,7 @@ const NavBar: React.FC = () => {
 					required 
 					className="auth-input"
 					min="0"
-					max="24"
+					max="450"
 				/>
                   <button 
                     type="submit" 
