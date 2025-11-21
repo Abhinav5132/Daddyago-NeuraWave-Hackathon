@@ -7,7 +7,7 @@ from modelConnector import RegressorModelConnector, ClassifierModelConnector
 from healthApiConnector import csvHealthConnector
 import json
 from dataclasses import asdict
-
+from dataclasses import dataclass
 app = Flask(__name__)
 
 CORS(app,
@@ -44,6 +44,7 @@ class User(db.Model):
     trigger_medicine = db.Column(db.Integer, nullable = False)
     normal_sleep = db.Column(db.Integer, nullable = False)
 
+@dataclass
 class PersonData:
     gender: str
     migraine_days_per_month: int
