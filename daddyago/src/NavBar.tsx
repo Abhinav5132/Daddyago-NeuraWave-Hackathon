@@ -104,6 +104,7 @@ const NavBar: React.FC = () => {
 		  setToastText('Successfully logged in!');
 		  setToastStyle(ToastStyle.Success);
 		  setToastVisible(true);
+		setPersonId(parseInt(userData.id));
         setUsername(userData.username);
         setIsLoggedIn(true);
         resetLogin();
@@ -452,9 +453,9 @@ const NavBar: React.FC = () => {
                     onFocus={() => setConfirmPasswordFocus(true)}
                     onBlur={() => setConfirmPasswordFocus(false)}
                   />
-				  <select 
-					{...registerSignup('gender')} 
-					required 
+				  <select
+					{...registerSignup('gender')}
+					required
 					className="auth-input"
 				>
 					<option value="">Select Gender</option>
@@ -462,67 +463,67 @@ const NavBar: React.FC = () => {
 					<option value="female">Female</option>
 					<option value="other">Other</option>
 				</select>
-				
-				<input 
+
+				<input
 					type="number"
-					{...registerSignup('migraine_days_per_month')} 
-					placeholder="Migraine days per month" 
-					required 
+					{...registerSignup('migraine_days_per_month')}
+					placeholder="Migraine days per month"
+					required
 					className="auth-input"
 					min="0"
 					max="31"
 				/>
-				
+
 				<div style={{marginBottom: '1rem'}}>
 					<label style={{display: 'block', marginBottom: '0.5rem'}}>
-					<input 
-						type="checkbox" 
+					<input
+						type="checkbox"
 						{...registerSignup('trigger_stress')}
 					/> Stress trigger
 					</label>
 					<label style={{display: 'block', marginBottom: '0.5rem'}}>
-					<input 
-						type="checkbox" 
+					<input
+						type="checkbox"
 						{...registerSignup('trigger_hormones')}
 					/> Hormones trigger
 					</label>
 					<label style={{display: 'block', marginBottom: '0.5rem'}}>
-					<input 
-						type="checkbox" 
+					<input
+						type="checkbox"
 						{...registerSignup('trigger_sleep')}
 					/> Sleep trigger
 					</label>
 					<label style={{display: 'block', marginBottom: '0.5rem'}}>
-					<input 
-						type="checkbox" 
+					<input
+						type="checkbox"
 						{...registerSignup('trigger_weather')}
 					/> Weather trigger
 					</label>
 					<label style={{display: 'block', marginBottom: '0.5rem'}}>
-					<input 
-						type="checkbox" 
+					<input
+						type="checkbox"
 						{...registerSignup('trigger_meals')}
 					/> Meals trigger
 					</label>
 					<label style={{display: 'block', marginBottom: '0.5rem'}}>
-					<input 
-						type="checkbox" 
+					<input
+						type="checkbox"
 						{...registerSignup('trigger_medicine')}
 					/> Medicine trigger
 					</label>
 				</div>
 
-				<input 
+				<input
 					type="number"
-					{...registerSignup('normal_sleep')} 
-					placeholder="Normal sleep hours" 
-					required 
+					{...registerSignup('normal_sleep')}
+					placeholder="Normal sleep hours"
+					required
 					className="auth-input"
 					min="0"
 					max="450"
 				/>
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     style={authButtonStyle}
                     onMouseEnter={() => setAuthButtonHover(true)}
                     onMouseLeave={() => setAuthButtonHover(false)}

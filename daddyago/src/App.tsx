@@ -46,7 +46,9 @@ const App: React.FC = () => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(personId),
+			body: JSON.stringify({
+				person_id: personId,
+			}),
 		})
 			.then((res) => res.json())
 			.then((data) => {
@@ -82,8 +84,8 @@ const App: React.FC = () => {
 			}}>
 				<NavBar />
 				<section style={{ padding: '2rem', textAlign: 'center' }}>
-					<button 
-						onClick={handlePredict} 
+					<button
+						onClick={handlePredict}
 						disabled={isLoading}
 						style={{
 							padding: '0.75rem 2rem',
@@ -95,7 +97,7 @@ const App: React.FC = () => {
 					>
 						{isLoading ? 'Predicting...' : 'Predict Migraine Probability'}
 					</button>
-					
+
 					<SemiCircleChart percentage={percentage} />
 					<Toast />
 				</section>
