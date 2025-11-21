@@ -22,11 +22,8 @@ class RegressorModelConnector():
 
 class ClassifierModelConnector():
     model: CatBoostClassifier
-    def get_prediction(self, health_val_json, person_val_json):
-        h_val = pd.read_json(health_val_json)
-        p_val = pd.read_json(person_val_json)
-        X_val = pd.merge(h_val, p_val, how="inner")
-        
+    def get_prediction(self, person_val_json):
+        X_val = pd.read_json(person_val_json)
         self.load_model("migrain_type.cbm")
         Y_val = self.model.predict(X_val)
         return Y_val[0]

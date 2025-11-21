@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from typing import Optional
 from flask_cors import CORS
+from modelConnector import RegressorModelConnector, ClassifierModelConnector
+from healthApiConnector import csvHealthConnector
 
 app = Flask(__name__)
 
@@ -82,6 +84,29 @@ def me()-> tuple[Response, int]:
         return jsonify({"user_id": user.id, "username": user.username}), 200 # type: ignore
     return jsonify({"error": "Not logged in"}), 401
 
+@app.route("/predict_probability", methods=["POST"])
+def predict_proability()-> tuple[Response, int]:
+
+    person_data_json = request.get_json()
+    if person_data_json is None:
+        return jsonify({"error": "No JSON data received"}), 400
+
+    health_data_json = csvHealthConnector()
+    regressorConnecter = RegressorModelConnector()
+    prediction = regressorConnecter.get_prediction(health_data_json, person_data_json)
+
+    return jsonify({"probability": prediction}), 200
+
+@app.route("/predict_type", methods = ["POST"])
+def predict_type()-> tuple[Response, int]: 
+    person_data_json = request.get_json()
+    if person_data_json is None:
+        return jsonify({"error": "No JSON data received"}), 400
+
+    classifierConnector = ClassifierModelConnector()
+    prediction = classifierConnector.get_prediction(person_data_json)
+
+    return jsonify({"probability": prediction}), 200
 
 if __name__ == "__main__":
     app.run(debug=True)
