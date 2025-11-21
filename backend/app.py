@@ -8,11 +8,13 @@ from healthApiConnector import csvHealthConnector
 
 app = Flask(__name__)
 
-CORS(app, 
-     origins=["http://localhost:3000"], 
+CORS(app,
+     origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://10.0.1.90:3000"],
      supports_credentials=True,
      allow_headers=["Content-Type", "Authorization"],
      methods=["GET", "POST", "OPTIONS"])
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = False
 
 app.config['WTF_CSRF_ENABLED'] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
@@ -75,7 +77,6 @@ def login()-> tuple[Response, int]:
 def logout()-> tuple[Response, int]:
     session.pop("user_id", None)
     return jsonify({"message": "Logged out"}), 200
-
 
 @app.route("/me")
 def me()-> tuple[Response, int]:
