@@ -8,15 +8,11 @@ export enum ToastStyle {
 	Error   = 'toast-error',
 };
 
-type ToastProps = {
-	style: ToastStyle;
-};
-
-export const Toast: React.FC<ToastProps> = ({ style }) => {
+export const Toast: React.FC = () => {
 	const ctx = useContext(UserContext);
 	if (ctx === null)
 		throw new Error("oops");
-	const { toastVisible, setToastVisible } = ctx;
+	const { toastText, toastStyle, toastVisible, setToastVisible } = ctx;
 
 	useEffect(() => {
 		if (!toastVisible)
@@ -27,8 +23,8 @@ export const Toast: React.FC<ToastProps> = ({ style }) => {
 	}, [toastVisible]);
 
 	return (
-		<div className={`toast ${style} ${toastVisible ? 'show' : ''}`}>
-			Qui voluptatibus odit reiciendis vel. Error quo in qui tenetur voluptatem atque. Et ea molestiae nisi dicta amet hic ea a. Maxime eaque rerum blanditiis sit deserunt. Omnis consequuntur cumque dicta sint.
+		<div className={`toast ${toastStyle} ${toastVisible ? 'show' : ''}`}>
+			{ toastText }
 		</div>
 	);
 };

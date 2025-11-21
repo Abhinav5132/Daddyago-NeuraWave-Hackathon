@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { ToastStyle } from './Toast';
 import { useForm } from 'react-hook-form';
 import { BACKEND_URL } from './constants';
+import { UserContext } from './App';
 
 type LoginForm = {
   username: string;
@@ -26,14 +28,14 @@ const NavBar: React.FC = () => {
   const [username, setUsername] = useState<string>('');
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(true);
-  
+
   // Hover states
   const [logoutHover, setLogoutHover] = useState(false);
   const [loginTriggerHover, setLoginTriggerHover] = useState(false);
   const [authButtonHover, setAuthButtonHover] = useState(false);
   const [loginToggleHover, setLoginToggleHover] = useState(false);
   const [registerToggleHover, setRegisterToggleHover] = useState(false);
-  
+
   // Input focus states
   const [loginUsernameFocus, setLoginUsernameFocus] = useState(false);
   const [loginPasswordFocus, setLoginPasswordFocus] = useState(false);
@@ -41,6 +43,15 @@ const NavBar: React.FC = () => {
   const [emailFocus, setEmailFocus] = useState(false);
   const [regPasswordFocus, setRegPasswordFocus] = useState(false);
   const [confirmPasswordFocus, setConfirmPasswordFocus] = useState(false);
+
+	const ctx = useContext(UserContext);
+	if (ctx === null)
+		throw Error("oops");
+	const {
+		setToastVisible,
+		setToastStyle,
+		setToastText,
+	} = ctx;
 
   useEffect(() => {
     checkAuthStatus();
@@ -52,7 +63,7 @@ const NavBar: React.FC = () => {
         method: 'GET',
         credentials: 'include',
       });
-      
+
       if (response.ok) {
         const userData: User = await response.json();
         setUsername(userData.username);
@@ -79,13 +90,18 @@ const NavBar: React.FC = () => {
 
       if (response.ok) {
         const userData: User = await response.json();
+		  setToastText('Successfully logged in!');
+		  setToastStyle(ToastStyle.Success);
+		  setToastVisible(true);
         setUsername(userData.username);
         setIsLoggedIn(true);
         resetLogin();
         setShowAuthModal(false);
       } else {
         const errorData = await response.json().catch(() => ({}));
-        console.error('Login failed:', errorData);
+		  setToastText(errorData.error);
+		  setToastStyle(ToastStyle.Error);
+		  setToastVisible(true);
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -207,7 +223,7 @@ const NavBar: React.FC = () => {
             }}>
               Welcome, {username}
             </span>
-            <button 
+            <button
               onClick={handleLogout}
               style={logoutButtonStyle}
               onMouseEnter={() => setLogoutHover(true)}
@@ -217,7 +233,7 @@ const NavBar: React.FC = () => {
             </button>
           </div>
         ) : (
-          <button 
+          <button
             onClick={() => setShowAuthModal(true)}
             style={loginTriggerStyle}
             onMouseEnter={() => setLoginTriggerHover(true)}
@@ -229,7 +245,7 @@ const NavBar: React.FC = () => {
       </header>
 
       {showAuthModal && (
-        <div 
+        <div
           style={{
             position: 'fixed',
             top: 0,
@@ -245,7 +261,7 @@ const NavBar: React.FC = () => {
           }}
           onClick={() => setShowAuthModal(false)}
         >
-          <div 
+          <div
             style={{
               background: '#1a1a2e',
               padding: '2rem',
@@ -258,7 +274,7 @@ const NavBar: React.FC = () => {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button 
+            <button
               style={{
                 position: 'absolute',
                 top: '1rem',
@@ -274,15 +290,15 @@ const NavBar: React.FC = () => {
             >
               ×
             </button>
-            
+
             {isLoginMode ? (
               <>
                 <h2 style={{ marginTop: 0 }}>Login</h2>
                 <form onSubmit={handleLoginSubmit(onLogin)} style={authFormStyle}>
-                  <input 
-                    {...registerLogin('username')} 
-                    placeholder="Username" 
-                    required 
+                  <input
+                    {...registerLogin('username')}
+                    placeholder="Username"
+                    required
                     style={{
                       padding: '0.75rem 1rem',
                       border: `1px solid ${loginUsernameFocus ? '#3498db' : 'rgba(255, 255, 255, 0.2)'}`,
@@ -295,11 +311,11 @@ const NavBar: React.FC = () => {
                     onFocus={() => setLoginUsernameFocus(true)}
                     onBlur={() => setLoginUsernameFocus(false)}
                   />
-                  <input 
-                    {...registerLogin('password')} 
-                    placeholder="Password" 
-                    type="password" 
-                    required 
+                  <input
+                    {...registerLogin('password')}
+                    placeholder="Password"
+                    type="password"
+                    required
                     style={{
                       padding: '0.75rem 1rem',
                       border: `1px solid ${loginPasswordFocus ? '#3498db' : 'rgba(255, 255, 255, 0.2)'}`,
@@ -312,8 +328,8 @@ const NavBar: React.FC = () => {
                     onFocus={() => setLoginPasswordFocus(true)}
                     onBlur={() => setLoginPasswordFocus(false)}
                   />
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     style={authButtonStyle}
                     onMouseEnter={() => setAuthButtonHover(true)}
                     onMouseLeave={() => setAuthButtonHover(false)}
@@ -327,8 +343,8 @@ const NavBar: React.FC = () => {
                   color: 'rgba(255, 255, 255, 0.6)',
                   fontSize: '0.9rem'
                 }}>
-                  Don't have an account? 
-                  <span 
+                  Don't have an account?
+                  <span
                     style={{
                       color: '#3498db',
                       cursor: 'pointer',
@@ -348,10 +364,10 @@ const NavBar: React.FC = () => {
               <>
                 <h2 style={{ marginTop: 0 }}>Register</h2>
                 <form onSubmit={handleSignupSubmit(onRegister)} style={authFormStyle}>
-                  <input 
-                    {...registerSignup('username')} 
-                    placeholder="Username" 
-                    required 
+                  <input
+                    {...registerSignup('username')}
+                    placeholder="Username"
+                    required
                     style={{
                       padding: '0.75rem 1rem',
                       border: `1px solid ${regUsernameFocus ? '#3498db' : 'rgba(255, 255, 255, 0.2)'}`,
@@ -364,11 +380,11 @@ const NavBar: React.FC = () => {
                     onFocus={() => setRegUsernameFocus(true)}
                     onBlur={() => setRegUsernameFocus(false)}
                   />
-                  <input 
-                    {...registerSignup('email')} 
-                    placeholder="Email" 
-                    type="email" 
-                    required 
+                  <input
+                    {...registerSignup('email')}
+                    placeholder="Email"
+                    type="email"
+                    required
                     style={{
                       padding: '0.75rem 1rem',
                       border: `1px solid ${emailFocus ? '#3498db' : 'rgba(255, 255, 255, 0.2)'}`,
@@ -381,11 +397,11 @@ const NavBar: React.FC = () => {
                     onFocus={() => setEmailFocus(true)}
                     onBlur={() => setEmailFocus(false)}
                   />
-                  <input 
-                    {...registerSignup('password')} 
-                    placeholder="Password" 
-                    type="password" 
-                    required 
+                  <input
+                    {...registerSignup('password')}
+                    placeholder="Password"
+                    type="password"
+                    required
                     style={{
                       padding: '0.75rem 1rem',
                       border: `1px solid ${regPasswordFocus ? '#3498db' : 'rgba(255, 255, 255, 0.2)'}`,
@@ -398,11 +414,11 @@ const NavBar: React.FC = () => {
                     onFocus={() => setRegPasswordFocus(true)}
                     onBlur={() => setRegPasswordFocus(false)}
                   />
-                  <input 
-                    {...registerSignup('confirmPassword')} 
-                    placeholder="Confirm Password" 
-                    type="password" 
-                    required 
+                  <input
+                    {...registerSignup('confirmPassword')}
+                    placeholder="Confirm Password"
+                    type="password"
+                    required
                     style={{
                       padding: '0.75rem 1rem',
                       border: `1px solid ${confirmPasswordFocus ? '#3498db' : 'rgba(255, 255, 255, 0.2)'}`,
@@ -415,8 +431,8 @@ const NavBar: React.FC = () => {
                     onFocus={() => setConfirmPasswordFocus(true)}
                     onBlur={() => setConfirmPasswordFocus(false)}
                   />
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     style={authButtonStyle}
                     onMouseEnter={() => setAuthButtonHover(true)}
                     onMouseLeave={() => setAuthButtonHover(false)}
@@ -430,8 +446,8 @@ const NavBar: React.FC = () => {
                   color: 'rgba(255, 255, 255, 0.6)',
                   fontSize: '0.9rem'
                 }}>
-                  Already have an account? 
-                  <span 
+                  Already have an account?
+                  <span
                     style={{
                       color: '#3498db',
                       cursor: 'pointer',

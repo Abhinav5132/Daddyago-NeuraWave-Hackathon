@@ -7,12 +7,18 @@ import { Toast, ToastStyle } from './Toast';
 type UserContextType = {
 	toastVisible: boolean;
 	setToastVisible: (b: boolean) => void;
+	toastStyle: ToastStyle;
+	setToastStyle: (b: ToastStyle) => void;
+	toastText: string;
+	setToastText: (b: string) => void;
 };
 
 export const UserContext = createContext<UserContextType | null>(null);
 
 const App: React.FC = () => {
 	const [toastVisible, setToastVisible] = useState(false);
+	const [toastStyle, setToastStyle] = useState(ToastStyle.Success);
+	const [toastText, setToastText] = useState('');
 	const [percentage, setPercentage] = useState(0);
 
 	useEffect(() => {
@@ -40,11 +46,15 @@ const App: React.FC = () => {
 			<UserContext.Provider value={{
 				toastVisible:    toastVisible,
 				setToastVisible: setToastVisible,
+				toastText:       toastText,
+				setToastText:    setToastText,
+				toastStyle:      ToastStyle.Success,
+				setToastStyle:   setToastStyle,
 			}}>
 				<NavBar />
 				<section>
 					<SemiCircleChart percentage={69} />
-					<Toast style={ToastStyle.Success} />
+					<Toast />
 				</section>
 			</UserContext.Provider>
 		</>

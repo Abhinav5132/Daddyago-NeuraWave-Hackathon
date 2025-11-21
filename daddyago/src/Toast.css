@@ -1,4 +1,6 @@
 .toast {
+	z-index: 999999999999;
+
 	width: 36ch;
 	font-size: 24px;
 	text-align: left;
