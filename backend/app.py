@@ -1,14 +1,21 @@
 from flask import Flask, Response, request, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-
-
-AppResponse = tuple[Response, int]
+from typing import Optional
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+CORS(app, 
+     origins=["http://localhost:3000"], 
+     supports_credentials=True,
+     allow_headers=["Content-Type", "Authorization"],
+     methods=["GET", "POST", "OPTIONS"])
+
+app.config['WTF_CSRF_ENABLED'] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = "hunter2"
+app.secret_key = "supersecret"
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -22,19 +29,17 @@ class User(db.Model):
     username = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
 
+# class HealthUserMigraineData(db.Model):
+#     pass
 
-class HealthUserMigraineData(db.Model):
-    pass
-
-
-class TriggerUserMigraineData(db.Model):
-    pass
+# class TriggerUserMigraineData(db.Model):
+#     pass
 
 # ----------------------
 # Routes
 # ----------------------
 @app.route("/register", methods=["POST"])
-def register() -> AppResponse:
+def register()-> tuple[Response, int]:
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
@@ -52,7 +57,7 @@ def register() -> AppResponse:
 
 
 @app.route("/login", methods=["POST"])
-def login() -> AppResponse:
+def login()-> tuple[Response, int]:
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
@@ -65,16 +70,16 @@ def login() -> AppResponse:
 
 
 @app.route("/logout")
-def logout() -> AppResponse:
+def logout()-> tuple[Response, int]:
     session.pop("user_id", None)
     return jsonify({"message": "Logged out"}), 200
 
 
 @app.route("/me")
-def me() -> AppResponse:
+def me()-> tuple[Response, int]:
     if "user_id" in session:
         user = User.query.get(session["user_id"])
-        return jsonify({"user_id": user.id, "username": user.username}), 200
+        return jsonify({"user_id": user.id, "username": user.username}), 200 # type: ignore
     return jsonify({"error": "Not logged in"}), 401
 
 
