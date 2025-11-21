@@ -127,3 +127,5 @@ app.*.symbols
 
 #catboost
 *catboost_info
+
+backend/instance
