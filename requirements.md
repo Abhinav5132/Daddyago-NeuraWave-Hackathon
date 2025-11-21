@@ -11,3 +11,6 @@
     ``` bash
     pip install pandas catboost numpy matplotlib shap
     ```
+
+Node version:
+v25.2.1
