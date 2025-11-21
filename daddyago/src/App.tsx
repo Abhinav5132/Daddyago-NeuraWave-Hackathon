@@ -4,7 +4,7 @@ import HelloWorld from './HelloWorld';
 const App: React.FC = () => {
 	return (
 		<div>
-			<h1>Daddyago</h1>
+			<h1>Daddyago’s Migrate Predictor</h1>
 			<HelloWorld />
 		</div>
 	);
