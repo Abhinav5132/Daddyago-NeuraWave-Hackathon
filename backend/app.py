@@ -93,7 +93,7 @@ def login()-> tuple[Response, int]:
     user = User.query.filter_by(username=username, password=password).first()
     if user:
         session["user_id"] = user.id
-        return jsonify({"message": f"Logged in as {username}"}), 200
+        return jsonify({"message": f"Logged in as {username}", "id": user.id}), 200
     return jsonify({"error": "Invalid credentials"}), 401
 
 
