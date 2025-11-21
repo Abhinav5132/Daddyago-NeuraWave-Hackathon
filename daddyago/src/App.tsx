@@ -7,7 +7,7 @@ const App: React.FC = () => {
 		<>
 			<NavBar />
 			<section>
-				<SemiCircleChart percentage={69} />
+				<SemiCircleChart percentage={0.69} />
 			</section>
 		</>
 	);
