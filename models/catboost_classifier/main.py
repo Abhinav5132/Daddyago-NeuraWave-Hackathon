@@ -17,7 +17,6 @@ def preprocess_data(dataset_health: str):
 
 def train_model(X_train, Y_train, iterations: int, learning_rate, depth, l2_leaf_reg) -> CatBoostClassifier:
     print("training....")
-    cat_features = ["gender"]
     model = CatBoostClassifier(
         iterations = iterations, 
         learning_rate = learning_rate, 
@@ -27,7 +26,7 @@ def train_model(X_train, Y_train, iterations: int, learning_rate, depth, l2_leaf
         task_type="GPU",
     )
 
-    model.fit(X_train, Y_train, cat_features=cat_features)
+    model.fit(X_train, Y_train)
 
     return model
 
@@ -38,7 +37,7 @@ def test_hyperparameters(X_train, Y_train, test_data) -> pd.DataFrame:
 
     results = []
     
-    n_trials = 1
+    n_trials = 100
     for _ in range(n_trials):
         iteration = random.choice([150, 200, 250, 300, 350, 500])
         learning_rate = random.uniform(0.01, 0.1)
@@ -68,7 +67,7 @@ def test_hyperparameters(X_train, Y_train, test_data) -> pd.DataFrame:
 
 
 def main():
-    data, validation_data = preprocess_data("migrain_type_data/migraine_data")
+    data, validation_data = preprocess_data("migrain_type_data/migraine_data.csv")
 
     X_train = data.drop(columns=["Type"])
     Y_train = data["Type"]
@@ -77,17 +76,7 @@ def main():
     hyperparameters = results_df.iloc[0]
     # now train a model again with those values and test for overfitting and breakdown of how its factors
     model = train_model(X_train, Y_train, iterations=hyperparameters["iterations"], learning_rate=hyperparameters["learning_rate"], depth=hyperparameters["depth"],l2_leaf_reg=hyperparameters["l2_leaf_reg"])
-    model.save_model("migrain_probability.cbm")
-
-    explainer = shap.TreeExplainer(model)
-    
-    shap_values = explainer.shap_values(X_train)
-
-    row_strength = np.abs(shap_values).sum(axis=1)
-    important_rows = row_strength.argsort()[::-1]
-
-    for idx in important_rows:  
-        print(f"Row {idx}: influence = {row_strength[idx]:.5f}")
+    model.save_model("migrain_type.cbm")
 
 if __name__ == "__main__": 
     main()
