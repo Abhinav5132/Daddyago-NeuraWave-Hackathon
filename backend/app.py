@@ -5,6 +5,8 @@ from typing import Optional
 from flask_cors import CORS
 from modelConnector import RegressorModelConnector, ClassifierModelConnector
 from healthApiConnector import csvHealthConnector
+import json
+from dataclasses import asdict
 
 app = Flask(__name__)
 
@@ -41,6 +43,17 @@ class User(db.Model):
     trigger_meals = db.Cloumn(db.Integer, nullable = False)
     trigger_medicine = db.Cloumn(db.Integer, nullable = False)
     normal_sleep = db.Cloumn(db.Integer, nullable = False)
+
+class PersonData:
+    gender: str
+    migraine_days_per_month: int
+    trigger_stress: int
+    trigger_hormones: int
+    trigger_sleep: int
+    trigger_weather: int
+    trigger_meals: int
+    trigger_medicine: int
+    normal_sleep: int
 # class HealthUserMigraineData(db.Model):
 #     pass
 
@@ -78,7 +91,7 @@ def register()-> tuple[Response, int]:
     trigger_weather=trigger_weather, trigger_meals = trigger_meals, 
     trigger_medicine = trigger_medicine,
     normal_sleep = normal_sleep)
-    
+
     db.session.add(user)
     db.session.commit()
     return jsonify({"message": "User registered successfully"}), 201
@@ -112,9 +125,29 @@ def me()-> tuple[Response, int]:
 @app.route("/predict_probability", methods=["POST"])
 def predict_proability()-> tuple[Response, int]:
 
-    person_data_json = request.get_json()
-    if person_data_json is None:
-        return jsonify({"error": "No JSON data received"}), 400
+    data = request.get_json()
+    if data is None or "person_id" not in data:
+        return jsonify({"error": "No person_id provided"}), 400
+
+    person_id = data["person_id"]
+
+    person_row = User.query.get(person_id)
+    if person_row is None:
+        return jsonify({"error": "Person not found"}), 404
+    
+    person_data = PersonData(
+        gender=person_row.gender,
+        migraine_days_per_month=person_row.migraine_days_per_month,
+        trigger_stress=person_row.trigger_stress,
+        trigger_hormones=person_row.trigger_hormones,
+        trigger_sleep=person_row.trigger_sleep,
+        trigger_weather=person_row.trigger_weather,
+        trigger_meals=person_row.trigger_meals,
+        trigger_medicine=person_row.trigger_medicine,
+        normal_sleep=person_row.normal_sleep
+    )
+
+    person_data_json = json.dumps(asdict(person_data))
 
     health_data_json = csvHealthConnector()
     regressorConnecter = RegressorModelConnector()
