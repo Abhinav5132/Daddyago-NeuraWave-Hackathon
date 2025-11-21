@@ -124,3 +124,6 @@ app.*.symbols
 #Data
 *synthetic_data_100_000
 *synthetic_data_10_000
+
+#catboost
+*catboost_info
