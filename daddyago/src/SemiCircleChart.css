@@ -25,7 +25,7 @@ code {
 	position: relative;
 	height: calc(100px * var(--scale));
 	margin-bottom: 10px;
-	background-color: #fff;
+	background-color: rgb(20, 21, 38);
 	border-radius:
 		calc(150px * var(--scale))
 		calc(150px * var(--scale))
@@ -40,7 +40,7 @@ code {
 	right: calc(20px * var(--scale));
 	left: calc(20px * var(--scale));
 	height: calc(80px * var(--scale));
-	background-color: #fff;
+	background-color: rgb(20, 21, 38);
 	border-radius:
 		calc(150px * var(--scale))
 		calc(150px * var(--scale))
@@ -68,5 +68,5 @@ code {
 	left: 0;
 	width: 100%;
 	font-size: calc(46px * var(--scale));
-	font-weight: 700
+	font-weight: 700;
 }

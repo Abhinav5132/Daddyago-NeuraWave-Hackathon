@@ -1,0 +1,28 @@
+header {
+	height: 72px;
+	background-color: #05061f;
+
+	div {
+		width: 80%;
+		height: 100%;
+		margin: auto;
+
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+
+		button {
+			background-color: hsl(157.95, 95.4%, 32.12%); /* #04AA6D */
+			border-radius: 8px;
+			font-size: 20px;
+			padding: 14px 40px;
+			border: 0;
+			transition-duration: 0.2s;
+
+			&:hover {
+				background-color: hsl(157.95, 95.4%, 34.12%);
+				font-size: 21px;
+			}
+		}
+	}
+}
