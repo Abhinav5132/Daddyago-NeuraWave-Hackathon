@@ -10,11 +10,21 @@ type LoginForm = {
 };
 
 type RegisterForm = {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    gender: string;
+    migraine_days_per_month: number;
+    normal_sleep: number;
+    trigger_stress: boolean;
+    trigger_hormones: boolean;
+    trigger_sleep: boolean;
+    trigger_weather: boolean;
+    trigger_meals: boolean;
+    trigger_medicine: boolean;
 };
+
 
 type User = {
   id: string;
@@ -121,8 +131,16 @@ const NavBar: React.FC = () => {
         credentials: 'include',
         body: JSON.stringify({
           username: data.username,
-          email: data.email,
-          password: data.password
+          password: data.password,
+          gender: data.gender,
+          migraine_days_per_month: data.migraine_days_per_month,
+          normal_sleep: data.normal_sleep,
+          trigger_stress: data.trigger_stress,
+          trigger_hormones: data.trigger_hormones,
+          trigger_sleep: data.trigger_sleep,
+          trigger_weather: data.trigger_weather,
+          trigger_meals: data.trigger_meals,
+          trigger_medicine: data.trigger_medicine
         }),
       });
 
@@ -135,6 +153,7 @@ const NavBar: React.FC = () => {
       } else {
         const errorData = await response.json().catch(() => ({}));
         console.error('Registration failed:', errorData);
+        alert(errorData.error || 'Registration failed');
       }
     } catch (error) {
       console.error('Registration error:', error);

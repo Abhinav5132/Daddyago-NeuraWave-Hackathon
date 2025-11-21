@@ -11,7 +11,7 @@ from dataclasses import asdict
 app = Flask(__name__)
 
 CORS(app,
-     origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://10.0.1.90:3000"],
+     origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://10.0.1.90:3000", "*"],
      supports_credentials=True,
      allow_headers=["Content-Type", "Authorization"],
      methods=["GET", "POST", "OPTIONS"])
@@ -36,24 +36,13 @@ class User(db.Model):
     password = db.Column(db.String(120), nullable=False)
     gender = db.Column(db.String(120), nullable = False)
     migraine_days_per_month = db.Column(db.Integer,nullable = False )
-    trigger_stress = db.Cloumn(db.Integer, nullable = False)
-    trigger_hormones = db.Cloumn(db.Integer, nullable = False)
-    trigger_sleep = db.Cloumn(db.Integer, nullable = False)
-    trigger_weather = db.Cloumn(db.Integer, nullable = False) 
-    trigger_meals = db.Cloumn(db.Integer, nullable = False)
-    trigger_medicine = db.Cloumn(db.Integer, nullable = False)
-    normal_sleep = db.Cloumn(db.Integer, nullable = False)
-
-class PersonData:
-    gender: str
-    migraine_days_per_month: int
-    trigger_stress: int
-    trigger_hormones: int
-    trigger_sleep: int
-    trigger_weather: int
-    trigger_meals: int
-    trigger_medicine: int
-    normal_sleep: int
+    trigger_stress = db.Column(db.Integer, nullable = False)
+    trigger_hormones = db.Column(db.Integer, nullable = False)
+    trigger_sleep = db.Column(db.Integer, nullable = False)
+    trigger_weather = db.Column(db.Integer, nullable = False) 
+    trigger_meals = db.Column(db.Integer, nullable = False)
+    trigger_medicine = db.Column(db.Integer, nullable = False)
+    normal_sleep = db.Column(db.Integer, nullable = False)
 # class HealthUserMigraineData(db.Model):
 #     pass
 
