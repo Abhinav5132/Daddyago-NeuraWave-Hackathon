@@ -450,8 +450,77 @@ const NavBar: React.FC = () => {
                     onFocus={() => setConfirmPasswordFocus(true)}
                     onBlur={() => setConfirmPasswordFocus(false)}
                   />
-                  <button
-                    type="submit"
+				  <select 
+					{...registerSignup('gender')} 
+					required 
+					className="auth-input"
+				>
+					<option value="">Select Gender</option>
+					<option value="male">Male</option>
+					<option value="female">Female</option>
+					<option value="other">Other</option>
+				</select>
+				
+				<input 
+					type="number"
+					{...registerSignup('migraine_days_per_month')} 
+					placeholder="Migraine days per month" 
+					required 
+					className="auth-input"
+					min="0"
+					max="31"
+				/>
+				
+				<div style={{marginBottom: '1rem'}}>
+					<label style={{display: 'block', marginBottom: '0.5rem'}}>
+					<input 
+						type="checkbox" 
+						{...registerSignup('trigger_stress')}
+					/> Stress trigger
+					</label>
+					<label style={{display: 'block', marginBottom: '0.5rem'}}>
+					<input 
+						type="checkbox" 
+						{...registerSignup('trigger_hormones')}
+					/> Hormones trigger
+					</label>
+					<label style={{display: 'block', marginBottom: '0.5rem'}}>
+					<input 
+						type="checkbox" 
+						{...registerSignup('trigger_sleep')}
+					/> Sleep trigger
+					</label>
+					<label style={{display: 'block', marginBottom: '0.5rem'}}>
+					<input 
+						type="checkbox" 
+						{...registerSignup('trigger_weather')}
+					/> Weather trigger
+					</label>
+					<label style={{display: 'block', marginBottom: '0.5rem'}}>
+					<input 
+						type="checkbox" 
+						{...registerSignup('trigger_meals')}
+					/> Meals trigger
+					</label>
+					<label style={{display: 'block', marginBottom: '0.5rem'}}>
+					<input 
+						type="checkbox" 
+						{...registerSignup('trigger_medicine')}
+					/> Medicine trigger
+					</label>
+				</div>
+
+				<input 
+					type="number"
+					{...registerSignup('normal_sleep')} 
+					placeholder="Normal sleep hours" 
+					required 
+					className="auth-input"
+					min="0"
+					max="24"
+				/>
+                  <button 
+                    type="submit" 
                     style={authButtonStyle}
                     onMouseEnter={() => setAuthButtonHover(true)}
                     onMouseLeave={() => setAuthButtonHover(false)}
