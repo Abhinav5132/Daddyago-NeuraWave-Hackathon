@@ -61,6 +61,7 @@ const NavBar: React.FC = () => {
 		setToastVisible,
 		setToastStyle,
 		setToastText,
+		setPersonId
 	} = ctx;
 
   useEffect(() => {
@@ -147,6 +148,7 @@ const NavBar: React.FC = () => {
       if (response.ok) {
         const userData: User = await response.json();
         setUsername(userData.username);
+		setPersonId(parseInt(userData.id));
         setIsLoggedIn(true);
         resetSignup();
         setShowAuthModal(false);
