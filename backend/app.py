@@ -43,6 +43,17 @@ class User(db.Model):
     trigger_meals = db.Column(db.Integer, nullable = False)
     trigger_medicine = db.Column(db.Integer, nullable = False)
     normal_sleep = db.Column(db.Integer, nullable = False)
+
+class PersonData:
+    gender: str
+    migraine_days_per_month: int
+    trigger_stress: int
+    trigger_hormones: int
+    trigger_sleep: int
+    trigger_weather: int
+    trigger_meals: int
+    trigger_medicine: int
+    normal_sleep: int
 # class HealthUserMigraineData(db.Model):
 #     pass
 

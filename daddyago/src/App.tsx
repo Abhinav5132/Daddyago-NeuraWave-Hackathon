@@ -11,6 +11,12 @@ type UserContextType = {
 	setToastStyle: (b: ToastStyle) => void;
 	toastText: string;
 	setToastText: (b: string) => void;
+	username: string;
+  	setUsername: (name: string) => void;
+  	isLoggedIn: boolean;
+  	setIsLoggedIn: (status: boolean) => void;
+  	personId: number | null;
+  	setPersonId: (id: number | null) => void;
 };
 
 export const UserContext = createContext<UserContextType | null>(null);
@@ -20,6 +26,9 @@ const App: React.FC = () => {
 	const [toastStyle, setToastStyle] = useState(ToastStyle.Success);
 	const [toastText, setToastText] = useState('');
 	const [percentage, setPercentage] = useState(0);
+	const [username, setUsername] = useState("");
+  	const [isLoggedIn, setIsLoggedIn] = useState(false);
+ 	const [personId, setPersonId] = useState<number | null>(null);
 
 	useEffect(() => {
 		// Send POST request to your backend
@@ -50,10 +59,11 @@ const App: React.FC = () => {
 				setToastText:    setToastText,
 				toastStyle:      ToastStyle.Success,
 				setToastStyle:   setToastStyle,
+				username, setUsername, isLoggedIn, setIsLoggedIn, personId, setPersonId
 			}}>
 				<NavBar />
 				<section>
-					<SemiCircleChart percentage={69} />
+					<SemiCircleChart percentage={percentage} />
 					<Toast />
 				</section>
 			</UserContext.Provider>
