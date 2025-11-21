@@ -1,0 +1,25 @@
+.toast {
+	width: 36ch;
+	font-size: 24px;
+	text-align: left;
+	padding-inline: 32px;
+	padding-block: 32px;
+	border-radius: 16px;
+	position: absolute;
+	top: 100px;
+	left: calc(50% - 18ch);
+	opacity: 0;
+	transition: opacity 0.5s ease;
+}
+
+.toast.show {
+	opacity: 1;
+}
+
+.toast-success {
+	background-color: hsl(157.95, 95.4%, 34.12%);
+}
+
+.toast-error {
+	background-color: #f44336;
+}

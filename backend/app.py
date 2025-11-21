@@ -23,12 +23,12 @@ class User(db.Model):
     password = db.Column(db.String(120), nullable=False)
 
 
-class HealthUserMigraineData(db.Model):
-    pass
+# class HealthUserMigraineData(db.Model):
+#     pass
 
 
-class TriggerUserMigraineData(db.Model):
-    pass
+# class TriggerUserMigraineData(db.Model):
+#     pass
 
 # ----------------------
 # Routes
