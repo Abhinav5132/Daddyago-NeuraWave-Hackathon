@@ -1,12 +1,14 @@
 from flask import Flask, Response, request, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from typing import Optional
+
+
+AppResponse = tuple[Response, int]
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = "supersecret"
+app.secret_key = "hunter2"
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -20,8 +22,10 @@ class User(db.Model):
     username = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
 
+
 class HealthUserMigraineData(db.Model):
     pass
+
 
 class TriggerUserMigraineData(db.Model):
     pass
@@ -30,7 +34,7 @@ class TriggerUserMigraineData(db.Model):
 # Routes
 # ----------------------
 @app.route("/register", methods=["POST"])
-def register()-> tuple[Response, int]:
+def register() -> AppResponse:
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
@@ -48,7 +52,7 @@ def register()-> tuple[Response, int]:
 
 
 @app.route("/login", methods=["POST"])
-def login()-> tuple[Response, int]:
+def login() -> AppResponse:
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
@@ -61,13 +65,13 @@ def login()-> tuple[Response, int]:
 
 
 @app.route("/logout")
-def logout()-> tuple[Response, int]:
+def logout() -> AppResponse:
     session.pop("user_id", None)
     return jsonify({"message": "Logged out"}), 200
 
 
 @app.route("/me")
-def me()-> tuple[Response, int]:
+def me() -> AppResponse:
     if "user_id" in session:
         user = User.query.get(session["user_id"])
         return jsonify({"user_id": user.id, "username": user.username}), 200
